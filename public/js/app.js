@@ -11827,7 +11827,8 @@ var vm = new Vue({
         password: '',
         remember: '',
         token: null,
-        user: ''
+        userdata: [],
+        auth: false
     },
     filters: {
         limit: function (value, amount) {
@@ -11841,8 +11842,10 @@ var vm = new Vue({
         }
     },
     ready: function() {
-        // this.Routes(window.location.href);
         this.viewHome();
+        if (localStorage.getItem("token") !== null) {
+            this.getUser();
+        }
     },
     methods: {
         viewHome: function viewHome() {
@@ -11873,30 +11876,40 @@ var vm = new Vue({
                 jQuery.post(self.api_url+'api/authenticate', $("#signUpForm").serialize())
                     .done(function (res) {
                         localStorage.setItem("token", res.token);
+                        localStorage.setItem("auth", true);
                         self.token = localStorage.token
+                        self.auth = localStorage.auth;
                         self.getUser();
-                        // window.location.replace('/');
+                        window.location.replace('/');
                     }).fail(function (err) {
                       alert('fail to authenticate!');
                 });
             }
         },
+        Logout: function Logout() {
+            localStorage.clear();
+            return window.location.replace("/");
+        },
         getUser: function getUser() {
           var self = this;
-            jQuery.ajax({
+           jQuery.ajax({
                 url: self.api_url+'api/authenticate',
-                type: 'GET',
-                crossDomain: true,
+                method: 'GET',
                 dataType: 'json',
-                beforeSend: function(req) {
-                    req.setRequestHeader('Authorization', 'Bearer '+ self.token);
-                },
+                data: { token: localStorage.token },
                 success: function(data) {
-                  alert('hello!');
-                  console.log(data);
+                  Vue.nextTick(function () {
+                      self.userdata = data.user;
+                      self.auth = true;
+                  });
+                    // setTimeout(function(){ alert("Success Redirect to Home"); }, 3000);
+                    // self.RedirectToHome();
                 },
-                error: function() { alert('boo!'); }
+                error: function(err) {
+                  //alert('Error token expired');
+                },
             });
+
         },
         PostItemWithSignup: function PostItemWithSignup() {
         },

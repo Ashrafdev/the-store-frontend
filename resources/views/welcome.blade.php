@@ -14,51 +14,6 @@
     }
 </style>
 @endpush
-
-    <header class="header white-bg">
-        <div class="sidebar-toggle-box">
-            <div data-original-title="Toggle Navigation" data-placement="right" class="icon-reorder tooltips"></div>
-        </div>
-        <a href="http://localhost:8081" class="logo">The <span>Store</span></a>
-        <div class="horizontal-menu navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/">See All Ads</a></li>
-                <li><a href="http://localhost:8081/post_item">Post Item</a></li>
-                <li><a href="#myModal-login" data-toggle="modal">Login</a></li>
-                <li><a href="#myModal-signup" data-toggle="modal">Sign Up</a></li>
-            </ul>
-        </div>
-
-        @if(Auth::check())
-            <div class="top-nav">
-                <ul class="nav pull-right top-menu">
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span class="username">
-                            @if (Auth::user())
-                                    {!! Auth::user()->name !!}
-                            @endif
-                        </span>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu extended logout">
-                            <div class="log-arrow-up"></div>
-                            <li><a href="{!! url("/profile/".Auth::user()->id) !!}"><i class="fa fa-users" aria-hidden="true"></i>Profile</a></li>
-                            <li><a href="{!! url('/my/items/') !!}"><i class="fa fa-list" aria-hidden="true"></i>My Items</a></li>
-                            <li><a href="{!! url('/password/reset') !!}"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Reset Pass</a></li>
-                            <li>
-                                <a href="#" v-on:click="Logout">
-                                    <i class="fa fa-key" aria-hidden="true"></i>Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        @endif
-
-    </header>
     <section class="wrapper">
         <!-- page start-->
         <div class="row">

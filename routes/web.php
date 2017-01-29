@@ -17,12 +17,7 @@ Route::get('/', function () {
 
 //Route::get('');
 //Route::get('');
-//Route::get('');
-
-Route::get('/profile', function () {
-    return view('profile');
-});
-Route::get('/my-items', function () {
-    return view('my_items');
-});
+Route::get('/post_item', function () { return view('post_item.index'); });
+Route::get('/profile', function () { return view('profile'); });
+Route::get('/my-items', function () { return view('my_items'); });
 
