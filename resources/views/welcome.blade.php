@@ -1,95 +1,294 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layout.app')
+@section('content')
+@push('style')
+<style>
+    .staggered-transition {
+        transition: all .5s ease;
+        overflow: hidden;
+        margin: 0;
+        height: 100%;
+    }
+    .staggered-enter, .staggered-leave {
+        opacity: 0;
+        height: 0;
+    }
+</style>
+@endpush
 
-        <title>Laravel</title>
+    <header class="header white-bg">
+        <div class="sidebar-toggle-box">
+            <div data-original-title="Toggle Navigation" data-placement="right" class="icon-reorder tooltips"></div>
+        </div>
+        <a href="http://localhost:8081" class="logo">The <span>Store</span></a>
+        <div class="horizontal-menu navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">See All Ads</a></li>
+                <li><a href="http://localhost:8081/post_item">Post Item</a></li>
+                <li><a href="#myModal-login" data-toggle="modal">Login</a></li>
+                <li><a href="#myModal-signup" data-toggle="modal">Sign Up</a></li>
+            </ul>
+        </div>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+        @if(Auth::check())
+            <div class="top-nav">
+                <ul class="nav pull-right top-menu">
+                    <li class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <span class="username">
+                            @if (Auth::user())
+                                    {!! Auth::user()->name !!}
+                            @endif
+                        </span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu extended logout">
+                            <div class="log-arrow-up"></div>
+                            <li><a href="{!! url("/profile/".Auth::user()->id) !!}"><i class="fa fa-users" aria-hidden="true"></i>Profile</a></li>
+                            <li><a href="{!! url('/my/items/') !!}"><i class="fa fa-list" aria-hidden="true"></i>My Items</a></li>
+                            <li><a href="{!! url('/password/reset') !!}"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Reset Pass</a></li>
+                            <li>
+                                <a href="#" v-on:click="Logout">
+                                    <i class="fa fa-key" aria-hidden="true"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        @endif
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+    </header>
+    <section class="wrapper">
+        <!-- page start-->
+        <div class="row">
+            <div class="col-md-3">
+                <section class="panel">
+                    <div class="panel-body">
+                        <input v-model="searchKeyword" type="text" placeholder="Keyword Search" class="form-control">
+                    </div>
+                </section>
+                <section class="panel">
+                    <header class="panel-heading">Category</header>
+                    <div class="panel-body">
+                        <ul class="nav prod-cat">
+                            <li><a href="#"><i class=" icon-angle-right"></i>All</a></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
 
-            .full-height {
-                height: 100vh;
-            }
+            <div class="col-md-9">
+                <section class="panel">
+                    <div class="panel-body">
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+                        <div class="pro-sort">
+                            <label class="pro-lab">Show</label>
+                            <select v-model="ShowPerPage" class="styled hasCustomSelect"
+                                    style="-webkit-appearance: menulist-button; width: 119px; position: absolute; opacity: 0; height: 39px; font-size: 12px;">
+                                <option value="12">Result Per Page</option>
+                                <option value="2">2 Per Page</option>
+                                <option value="4">4 Per Page</option>
+                                <option value="6">6 Per Page</option>
+                                <option value="8">8 Per Page</option>
+                                <option value="10">10 Per Page</option>
+                            </select>
+                            <span class="customSelect styled" style="display: inline-block;">
+                                <span class="customSelectInner" style="width: 97px; display: inline-block;">Result Per Page</span>
+                            </span>
+                        </div>
 
-            .position-ref {
-                position: relative;
-            }
+                        <div class="pull-right" v-if="items.last_page!==1">
+                            <ul class="pagination pagination-sm pro-page-list">
+                                <li v-for="(n, index) in items.last_page">
+                                    <a href="javascript:void(0)" v-on:click="getHomePage(n)">@{{ n }}</a>
+                                </li>
+                            </ul>
+                        </div>
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+                    </div>
+                </section>
 
-            .content {
-                text-align: center;
-            }
+                <div class="row product-list">
 
-            .title {
-                font-size: 84px;
-            }
+                    <div class="col-md-4" v-for="item in items.data | filterBy searchKeyword in 'name' | limit ShowPerPage"
+                         transition="staggered"
+                         stagger="100">
+                        <section class="panel">
+                            <div class="pro-img-box">
+                                <img v-bind:src="api_url+item.img_path" alt="" width="312px" height="248px">
+                                <a v-bind:href="'/view/item/'+item.id" class="adtocart">
+                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="panel-body text-center">
+                                <h4>
+                                    <a v-bind:href="'/view/item/'+item.id" class="pro-title">
+                                        @{{ item.name }}
+                                    </a>
+                                </h4>
+                                <p class="price">RM@{{ item.price }}</p>
+                            </div>
+                        </section>
+                    </div>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+        <!-- page end-->
+    </section>
+    <div class="panel-body">
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-login"
+             class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">Login Form</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent class="form-horizontal" role="form" id="signUpForm">
+                            <div class="form-group">
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" v-model="email" name="email" value="" required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" v-model="password" name="password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" v-model="remember" name="remember"> Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-8 col-md-offset-4">
+                                    <button v-on:click="Login" type="submit" class="btn btn-primary">Login</button>
+                                    <a class="btn btn-link" href="/password/reset">Forgot Your Password?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-signup"
+             class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h4 class="modal-title">Sign Up</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" method="POST" action="http://localhost:8081/register"
+                              accept-charset="UTF-8">
+                            <input type="hidden" name="_token" value="lQ4J7EIOxQX5nM5t5L3kcSU69mpy7WfQtHXTR4eW">
+
+                            <div class="form-group">
+                                <label for="name" class="col-md-4 control-label">Name</label>
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control" name="name"
+                                           value="" required autofocus>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" name="email"
+                                           value="" required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Birthday</label>
+
+                                <div class="col-md-6">
+                                    <input id="dob" type="date" class="form-control" name="dob" required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Gender</label>
+
+                                <div class="col-md-6">
+                                    <select name="gender" id="gender" class="form-control" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country" class="col-md-4 control-label">Country</label>
+
+                                <div class="col-md-6">
+
+                                    <select name="country" id="country" class="form-control" required>
+                                        <option value="MY">Malaysia</option>
+                                        <option value="TH">Thailand</option>
+                                        <option value="VT">Vietnam</option>
+                                        <option value="BRN">Brunei</option>
+                                        <option value="ID">Indonesia</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Mobile</label>
+
+                                <div class="col-md-6">
+                                    <input type="number" name="mobile" id="mobile" class="form-control" required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password" required>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

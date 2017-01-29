@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Route::get('');
+//Route::get('');
+//Route::get('');
+
+Route::get('/profile', function () {
+    return view('profile');
+});
+Route::get('/my-items', function () {
+    return view('my_items');
+});
+
