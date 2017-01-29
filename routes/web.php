@@ -11,13 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-//Route::get('');
-//Route::get('');
+Route::get('/', function () { return view('welcome'); });
+Route::get('/password/reset', function () { return view('auth.passwords.email'); });
 Route::get('/post_item', function () { return view('post_item.index'); });
-Route::get('/profile', function () { return view('profile'); });
-Route::get('/my-items', function () { return view('my_items'); });
+Route::get('/profile', function () { return view('users.show'); });
+Route::get('/my/items', function () { return view('items.index'); });
+Route::get('/view/item/',  function () { return view('items.show'); });
 

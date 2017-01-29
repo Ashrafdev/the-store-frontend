@@ -41,7 +41,7 @@
                     </a>
                     <ul class="dropdown-menu extended logout">
                         <div class="log-arrow-up"></div>
-                        <li><a v-bind:href="'/profile/'+userdata.id"><i class="fa fa-users" aria-hidden="true"></i>Profile</a></li>
+                        <li><a href="/profile"><i class="fa fa-users" aria-hidden="true"></i>Profile</a></li>
                         <li><a href="/my/items/"><i class="fa fa-list" aria-hidden="true"></i>My Items</a></li>
                         <li><a href="/password/reset"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Reset Pass</a></li>
                         <li>
@@ -58,7 +58,7 @@
 <body>
 @yield('content')
 <footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/app.js"></script>
 @yield('scripts')

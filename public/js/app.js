@@ -11812,6 +11812,10 @@ module.exports = Watcher
 var Vue = require('vue');
 var _ = require('underscore');
 
+window.Vue = Vue;
+
+Vue.config.debug = true // turn on debugging mode
+
 const global_api_url = 'http://localhost:8081/';
 
 var vm = new Vue({
@@ -11828,7 +11832,11 @@ var vm = new Vue({
         remember: '',
         token: null,
         userdata: [],
-        auth: false
+        myItems: [],
+        auth: false,
+        active: true,
+        hasError: false,
+        ViewItemById: [],
     },
     filters: {
         limit: function (value, amount) {
@@ -11843,8 +11851,12 @@ var vm = new Vue({
     },
     ready: function() {
         this.viewHome();
+        var self = this;
         if (localStorage.getItem("token") !== null) {
             this.getUser();
+            this.IndexMyItems();
+            this.Viewitem(localStorage.viewItemId, false);
+            setInterval(self.RenewToken, 1500000);
         }
     },
     methods: {
@@ -11882,7 +11894,7 @@ var vm = new Vue({
                         self.getUser();
                         window.location.replace('/');
                     }).fail(function (err) {
-                      alert('fail to authenticate!');
+                      console.log('fail to authenticate!');
                 });
             }
         },
@@ -11891,6 +11903,7 @@ var vm = new Vue({
             return window.location.replace("/");
         },
         getUser: function getUser() {
+
           var self = this;
            jQuery.ajax({
                 url: self.api_url+'api/authenticate',
@@ -11900,6 +11913,7 @@ var vm = new Vue({
                 success: function(data) {
                   Vue.nextTick(function () {
                       self.userdata = data.user;
+                      localStorage.setItem("id", data.user.id);
                       self.auth = true;
                   });
                     // setTimeout(function(){ alert("Success Redirect to Home"); }, 3000);
@@ -11911,9 +11925,66 @@ var vm = new Vue({
             });
 
         },
+        RenewToken: function RenewToken() {
+          console.log('interval');
+            var self = this;
+            jQuery.ajax({
+                url: self.api_url+'api/renewToken',
+                method: 'GET',
+                dataType: 'json',
+                data: { id: self.userdata.id },
+                success: function(data) {
+                  console.log(data)
+                    Vue.nextTick(function () { localStorage.token = data.token; });
+                    // setTimeout(function(){ alert("Success Redirect to Home"); }, 3000);
+                },
+                error: function(err) {
+                    //alert('Error token expired');
+                },
+            });
+        },
+        UpdateProfile: function UpdateProfile() {
+            var self = this;
+            jQuery.post(self.api_url+'api/users/'+self.userdata.id,
+                $("#editProfile").serialize() + '&_method=PUT&token=' + localStorage.token
+            ).done(function (res) {
+                  console.log(res);
+                }).fail(function (err) {
+                console.log(err);
+            });
+        },
+        IndexMyItems: function IndexMyItems() {
+            var self = this;
+            jQuery.get(self.api_url+'api/items',
+                {
+                  id: localStorage.id,
+                  token: localStorage.token
+                }).done(function (data) {
+                Vue.nextTick(function () {
+                  // console.log(data);
+                    self.myItems = data;
+                });
+            });
+        },
+        Viewitem: function Viewitem(id, redirect) {
+            var self = this;
+            localStorage.setItem("viewItemId", id)
+
+              jQuery.get(self.api_url + 'api/items/' + localStorage.viewItemId,
+                  {token: localStorage.token})
+                  .done(function (data) {
+                      Vue.nextTick(function () {
+                          self.ViewItemById = data;
+                      });
+                });
+
+            if (redirect == true) {
+                window.location.replace("/view/item");
+            }
+        },
         PostItemWithSignup: function PostItemWithSignup() {
         },
-        RedirectToHome: function toHome() {
+        RedirectToHome: function RedirectToHome() {
             return window.location.replace("/");
         }
     },

@@ -72,13 +72,13 @@
                         <section class="panel">
                             <div class="pro-img-box">
                                 <img v-bind:src="api_url+item.img_path" alt="" width="312px" height="248px">
-                                <a v-bind:href="'/view/item/'+item.id" class="adtocart">
+                                <a href="#" v-on:click="Viewitem(item.id, true)" class="adtocart">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 </a>
                             </div>
                             <div class="panel-body text-center">
                                 <h4>
-                                    <a v-bind:href="'/view/item/'+item.id" class="pro-title">
+                                    <a href="#" v-on:click="Viewitem(item.id, true)" class="pro-title">
                                         @{{ item.name }}
                                     </a>
                                 </h4>
