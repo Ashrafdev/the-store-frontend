@@ -11961,7 +11961,8 @@ var vm = new Vue({
             jQuery.post(self.api_url+'api/users/'+self.userdata.id+'?_method=PUT&token=' + localStorage.token,
                 $("#editProfile").serialize()
             ).done(function (res) {
-                  console.log(res);
+                window.location.replace("/profile");
+                alert('success profile updated');
                 }).fail(function (err) {
                 alert('error invalid request');
             });
