@@ -6,7 +6,7 @@
         <div class="form-group" v-bind:class="{ 'has-error' : item_name.length < 1}">
             <label class="col-xs-2 control-label">Name</label>
             <div class="col-xs-10">
-                <input v-model="item_name" type="text" name="item_name" class="form-control" placeholder="Name" required>
+                <input v-model="item_name_create" type="text" name="item_name" class="form-control" placeholder="Name" required>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
 
     <div class="form-group">
         <div class="col-md-6 col-md-offset-4">
-            <button v-on:click="CreateItemByUser()" v-if="item_name" type="submit" class="btn btn-primary">
+            <button v-on:click="CreateItemByUser()" v-if="item_name_create" type="submit" class="btn btn-primary">
                 Submit
             </button>
         </div>

@@ -12007,39 +12007,42 @@ var vm = new Vue({
         DeleteItemByUser: function DeleteItemByUser(id) {
             var self = this;
 
-            jQuery.post(self.api_url + 'api/items/'+id+'?token='+localStorage.token,{
-              _method: 'DELETE'
-            })
-                .done(function (data) {
-                  window.location.replace("/my/items/");
-                  alert('item deleted');
-              }).fail(function (err) {
-                // consolle.debug(err);
-            });
+            if (confirm('delete item ?')) {
+                jQuery.post(self.api_url + 'api/items/'+id+'?token='+localStorage.token,{
+                    _method: 'DELETE'
+                })
+                    .done(function (data) {
+                        window.location.replace("/my/items/");
+                        alert('item deleted');
+                    }).fail(function (err) {
+                    // consolle.debug(err);
+                });
+            }
+
         },
         OpenUpdateItemByUser: function OpenUpdateItemByUser(id) {
-            return localStorage.setItem("UpdateItemId", id);
+            localStorage.setItem("UpdateItemId", id);
         },
-        UpdateItemByUser: function UpdateItemByUser(id) {
+        UpdateItemByUser: function UpdateItemByUser() {
             var self = this;
 
             jQuery.ajax({
                 type: "POST",
-                url: self.api_url + 'api/items/'+ localStorage.UpdateItemId +'?_method=PUT&token=' + localStorage.token + '&user_id=' + localStorage.id,
-                data: new FormData($('#editItemByUser')[0]),
+                url: self.api_url + 'api/items/' + localStorage.UpdateItemId + '?_method=PUT&token=' + localStorage.token + '&user_id=' + localStorage.id,
+                data: new FormData($('#UpdateItemByUser')[0]),
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     console.debug(data);
-                    // window.location.replace("/my/items/");
-                    // alert('item updated successful');
+                    window.location.replace("/my/items/");
+                    alert('item updated!');
                 },
                 error: function (err) {
                     console.debug(err);
                 }
             });
 
-
+            return false;
         },
         PostItemWithSignup: function PostItemWithSignup() {
         },

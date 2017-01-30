@@ -31,57 +31,57 @@
                                     <td>@{{ myitem.name }}</td>
                                     <td>@{{ myitem.description }}</td>
                                     <td>RM@{{ myitem.price }}</td>
-                                    <td><span class="label label-info label-mini" data-toggle="modal" data-target="#viewImage-@{{ index }}">Click For View</span></td>
+                                    <td><span class="label label-info label-mini" data-toggle="modal" v-bind:data-target="'#viewImage-'+index">Click For View</span></td>
                                     <td>
                                         <a v-on:click="Viewitem(myitem.id, true)" class="btn btn-success btn-xs" title="View"><i class="fa fa-check"></i></a>
-                                        <a v-on:click="OpenUpdateItemByUser(myitem.id)" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#updateMyItem-@{{ index }}" title="Edit"><i class="fa fa-pencil"></i></a>
+                                        <a v-on:click="OpenUpdateItemByUser(myitem.id)" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#updateMyItem" title="Edit"><i class="fa fa-pencil"></i></a>
                                         <a v-on:click="DeleteItemByUser(myitem.id)" class="btn btn-danger btn-xs" title="delete" href="#">
                                             <i class="fa fa-trash "></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <div aria-hidden="true" aria-labelledby="addMyItems" role="dialog" tabindex="-1" id="addMyItems"
+                                        <div aria-hidden="true" aria-labelledby="viewImage" role="dialog" tabindex="-1" v-bind:id="'viewImage-'+index"
                                              class="modal fade">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                        <h4 class="modal-title">Create New</h4>
-                                                    </div>
-                                                    <div class="modal-body">@include('items.create')</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div aria-hidden="true" aria-labelledby="updateMyItem-@{{ index }}" role="dialog" tabindex="-1" id="updateMyItem-@{{ index }}"
-                                             class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                        <h4 class="modal-title">Update Item</h4>
+                                                        <h4 class="modal-title">View image</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        @include('items.edit')
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div aria-hidden="true" aria-labelledby="viewImage-@{{ index }}" role="dialog" tabindex="-1" id="viewImage-@{{ index }}"
-                                             class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                        <h4 class="modal-title">View Image</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <img v-bind:src="api_url+myitem.img_path" width="100%" v-bind:title="myitem.name">
+                                                        <img v-bind:src="api_url+myitem.img_path" width="100%">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
+                                <div aria-hidden="true" aria-labelledby="addMyItems" role="dialog" tabindex="-1" id="addMyItems"
+                                     class="modal fade">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                                <h4 class="modal-title">Create New</h4>
+                                            </div>
+                                            <div class="modal-body">@include('items.create')</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div aria-hidden="true" aria-labelledby="updateMyItem" role="dialog" tabindex="-1" id="updateMyItem"
+                                 class="modal fade">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                            <h4 class="modal-title">Update Item</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @include('items.edit')
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </tbody>
                         </table>
 
