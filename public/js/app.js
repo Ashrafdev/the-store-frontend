@@ -11907,7 +11907,7 @@ var vm = new Vue({
                         self.getUser();
                         window.location.replace('/');
                     }).fail(function (err) {
-                      console.log('fail to authenticate!');
+                      alert('Wrong Email Or Passwod Please tr Again!');
                 });
             }
         },
@@ -11985,7 +11985,6 @@ var vm = new Vue({
 
             jQuery.get(self.api_url + 'api/items/' + localStorage.viewItemId)
                 .done(function (data) {
-                  console.debug(self.api_url + 'api/items/' + localStorage.viewItemId);
                   // console.debug(data);
                     Vue.nextTick(function () {
                         self.ViewItemById = data;
@@ -12067,12 +12066,53 @@ var vm = new Vue({
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    console.debug(data);
+                    // console.debug(data);
                     window.location.replace("/");
                     alert('successful your item added please login to manage item!');
                 },
                 error: function (err) {
-                    alert('Error Make sure a valid input');
+                    alert('error make sure you have enter a valid input');
+                }
+            });
+
+            return false;
+        },
+        ResetPassword: function ResetPassword() {
+            var self = this;
+
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/password/reset',
+                data: $('#ResetPassword').serialize(),
+                success: function (data) {
+                    console.debug(data);
+                    window.location.replace("/");
+                    alert('successful check your email!');
+                },
+                error: function (err) {
+                    alert('error invalid email or request');
+                }
+            });
+
+            return false;
+        },
+        ChangePassword: function ChangePassword() {
+            var self = this;
+
+            var resetToken = window.location.pathname;
+            var resetToken = resetToken.split("/")[3];
+
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/password/reset/' + resetToken,
+                data: $('#ChangePassword').serialize(),
+                success: function (data) {
+                    // console.debug(data);
+                    window.location.replace("/");
+                    alert('successful password has been changed Please Login!');
+                },
+                error: function (err) {
+                    alert('error invalid request');
                 }
             });
 

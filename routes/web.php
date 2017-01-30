@@ -13,6 +13,7 @@
 
 Route::get('/', function () { return view('welcome'); });
 Route::get('/password/reset', function () { return view('auth.passwords.email'); });
+Route::get('/password/reset/{token}', function () { return view('auth.passwords.reset'); });
 Route::get('/post_item', function () { return view('post_item.index'); });
 Route::get('/profile', function () { return view('users.show'); });
 Route::get('/my/items', function () { return view('items.index'); });
