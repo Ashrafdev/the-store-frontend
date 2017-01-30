@@ -11855,9 +11855,9 @@ var vm = new Vue({
         if (localStorage.getItem("token") !== null) {
             this.getUser();
             this.IndexMyItems();
-            this.Viewitem(localStorage.viewItemId, false);
             setInterval(self.RenewToken, 1500000);
         }
+        this.Viewitem(localStorage.viewItemId, false);
     },
     methods: {
         viewHome: function viewHome() {
@@ -11970,17 +11970,76 @@ var vm = new Vue({
             var self = this;
             localStorage.setItem("viewItemId", id)
 
-              jQuery.get(self.api_url + 'api/items/' + localStorage.viewItemId,
-                  {token: localStorage.token})
-                  .done(function (data) {
-                      Vue.nextTick(function () {
-                          self.ViewItemById = data;
-                      });
-                });
+            jQuery.get(self.api_url + 'api/items/' + localStorage.viewItemId)
+                .done(function (data) {
+                  console.debug(self.api_url + 'api/items/' + localStorage.viewItemId);
+                  // console.debug(data);
+                    Vue.nextTick(function () {
+                        self.ViewItemById = data;
+                    });
+              }).fail(function (err) {
+                // consolle.debug(err);
+            });
 
             if (redirect == true) {
                 window.location.replace("/view/item");
             }
+        },
+        CreateItemByUser: function CreateItemByUser() {
+            var self = this;
+
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/items/?token=' + localStorage.token + '&user_id=' + localStorage.id,
+                data: new FormData($('#createItemByUser')[0]),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                  console.debug(data);
+                    window.location.replace("/my/items/");
+                    alert('item created successful');
+                },
+                error: function (err) {
+                    console.debug(err);
+                }
+            });
+        },
+        DeleteItemByUser: function DeleteItemByUser(id) {
+            var self = this;
+
+            jQuery.post(self.api_url + 'api/items/'+id+'?token='+localStorage.token,{
+              _method: 'DELETE'
+            })
+                .done(function (data) {
+                  window.location.replace("/my/items/");
+                  alert('item deleted');
+              }).fail(function (err) {
+                // consolle.debug(err);
+            });
+        },
+        OpenUpdateItemByUser: function OpenUpdateItemByUser(id) {
+            return localStorage.setItem("UpdateItemId", id);
+        },
+        UpdateItemByUser: function UpdateItemByUser(id) {
+            var self = this;
+
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/items/'+ localStorage.UpdateItemId +'?_method=PUT&token=' + localStorage.token + '&user_id=' + localStorage.id,
+                data: new FormData($('#editItemByUser')[0]),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.debug(data);
+                    // window.location.replace("/my/items/");
+                    // alert('item updated successful');
+                },
+                error: function (err) {
+                    console.debug(err);
+                }
+            });
+
+
         },
         PostItemWithSignup: function PostItemWithSignup() {
         },

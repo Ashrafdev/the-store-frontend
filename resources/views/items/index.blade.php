@@ -34,13 +34,13 @@
                                     <td><span class="label label-info label-mini" data-toggle="modal" data-target="#viewImage-@{{ index }}">Click For View</span></td>
                                     <td>
                                         <a v-on:click="Viewitem(myitem.id, true)" class="btn btn-success btn-xs" title="View"><i class="fa fa-check"></i></a>
-                                        <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#updateMyItem-@{{ index }}" title="Edit"><i class="fa fa-pencil"></i></a>
-                                        <a class="btn btn-danger btn-xs" title="delete" href="#">
+                                        <a v-on:click="OpenUpdateItemByUser(myitem.id)" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#updateMyItem-@{{ index }}" title="Edit"><i class="fa fa-pencil"></i></a>
+                                        <a v-on:click="DeleteItemByUser(myitem.id)" class="btn btn-danger btn-xs" title="delete" href="#">
                                             <i class="fa fa-trash "></i>
                                         </a>
                                     </td>
                                     <td>
-                                        <div aria-hidden="true" aria-labelledby="addMyItems-@{{ index }}" role="dialog" tabindex="-1" id="addMyItems-@{{ index }}"
+                                        <div aria-hidden="true" aria-labelledby="addMyItems" role="dialog" tabindex="-1" id="addMyItems"
                                              class="modal fade">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -48,9 +48,7 @@
                                                         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
                                                         <h4 class="modal-title">Create New</h4>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        {{--@include('items.create')--}}
-                                                    </div>
+                                                    <div class="modal-body">@include('items.create')</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +61,7 @@
                                                         <h4 class="modal-title">Update Item</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {{--@include('items.edit', ['id' => $item->id])--}}
+                                                        @include('items.edit')
                                                     </div>
                                                 </div>
                                             </div>
