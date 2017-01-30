@@ -11958,12 +11958,12 @@ var vm = new Vue({
         },
         UpdateProfile: function UpdateProfile() {
             var self = this;
-            jQuery.post(self.api_url+'api/users/'+self.userdata.id,
-                $("#editProfile").serialize() + '&_method=PUT&token=' + localStorage.token
+            jQuery.post(self.api_url+'api/users/'+self.userdata.id+'?_method=PUT&token=' + localStorage.token,
+                $("#editProfile").serialize()
             ).done(function (res) {
                   console.log(res);
                 }).fail(function (err) {
-                console.log(err);
+                alert('error invalid request');
             });
         },
         IndexMyItems: function IndexMyItems() {

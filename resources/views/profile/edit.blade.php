@@ -1,29 +1,28 @@
-<form class="form-horizontal" role="form" id="editProfile" @prevent.default>
+<form class="form-horizontal" role="form" id="editProfile" v-on:submit.prevent>
 
     <div class="form-group" v-bind:class="{'has-error': hasError}">
         <label for="name" class="col-md-4 control-label">Name</label>
         <div class="col-md-6">
-            <input id="name" type="text" class="form-control" name="name" value="" required autofocus>
+            <input id="name" type="text" class="form-control" name="name" v-bind:value="userdata.name" required autofocus>
         </div>
     </div>
 
     <div class="form-group" v-bind:class="{'has-error': hasError}">
         <label for="email" class="col-md-4 control-label">E-Mail Address</label>
         <div class="col-md-6">
-            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+            <input id="email" type="email" class="form-control" name="email" v-bind:value="userdata.email" required>
         </div>
     </div>
 
     <div class="form-group" v-bind:class="{'has-error': hasError}">
         <label for="password" class="col-md-4 control-label">Birthday</label>
         <div class="col-md-6">
-            <input id="dob" type="date" class="form-control" name="dob" required>
+            <input id="dob" type="date" class="form-control" name="dob" v-bind:value="userdata.dob" required>
         </div>
     </div>
 
     <div class="form-group" v-bind:class="{'has-error': hasError}">
         <label for="password" class="col-md-4 control-label">Gender</label>
-
         <div class="col-md-6">
             <select name="gender" id="gender" class="form-control" required>
                 <option value="Male">Male</option>
@@ -58,7 +57,7 @@
     <div class="form-group" v-bind:class="{'has-error': hasError}">
         <label for="password" class="col-md-4 control-label">Mobile</label>
         <div class="col-md-6">
-            <input type="number" name="mobile" id="mobile" class="form-control" required>
+            <input type="number" name="mobile" id="mobile" v-bind:value="userdata.mobile" maxlength="10" class="form-control" required>
         </div>
     </div>
 
