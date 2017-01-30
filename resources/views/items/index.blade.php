@@ -1,9 +1,6 @@
 @extends('layout.app')
 @section('content')
     <section class="wrapper">
-        {{--@include('Element.Flash.general')--}}
-        {{--@include('Element.Flash.success')--}}
-        {{--@include('Element.Flash.warning')--}}
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <section class="panel">
@@ -13,8 +10,7 @@
                             <a href="" class="label label-info label-mini" data-toggle="modal" data-target="#addMyItems">Add</a>
                         </div>
                     </header>
-                    {{--@if($items->count() > 0)--}}
-                        <table class="table table-striped table-advance table-hover">
+                        <table v-if="myItems.data" class="table table-striped table-advance table-hover">
                             <thead>
                             <tr>
                                 <th><i class="fa fa-bullhorn"></i> Name</th>
@@ -26,7 +22,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{--@foreach($items as $key => $item)--}}
                                 <tr v-for="(index, myitem) in myItems.data.data">
                                     <td>@{{ myitem.name }}</td>
                                     <td>@{{ myitem.description }}</td>
@@ -56,37 +51,35 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <div aria-hidden="true" aria-labelledby="addMyItems" role="dialog" tabindex="-1" id="addMyItems"
-                                     class="modal fade">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                                <h4 class="modal-title">Create New</h4>
-                                            </div>
-                                            <div class="modal-body">@include('items.create')</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div aria-hidden="true" aria-labelledby="updateMyItem" role="dialog" tabindex="-1" id="updateMyItem"
-                                 class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                                            <h4 class="modal-title">Update Item</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            @include('items.edit')
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             </tbody>
                         </table>
-
-                        <p v-if="!myItems.data">No Data... You Dont Have Item</p>
-
+                    <p v-else>No Data... You Dont Have Item</p>
+                    <div aria-hidden="true" aria-labelledby="addMyItems" role="dialog" tabindex="-1" id="addMyItems"
+                         class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                    <h4 class="modal-title">Create New</h4>
+                                </div>
+                                <div class="modal-body">@include('items.create')</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div aria-hidden="true" aria-labelledby="updateMyItem" role="dialog" tabindex="-1" id="updateMyItem"
+                         class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                    <h4 class="modal-title">Update Item</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @include('items.edit')
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>

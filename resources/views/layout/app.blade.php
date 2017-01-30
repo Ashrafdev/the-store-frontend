@@ -23,7 +23,7 @@
     <div class="horizontal-menu navbar-collapse collapse">
         <ul class="nav navbar-nav">
             <li><a href="/">See All Ads</a></li>
-            <li><a href="/post_item">Post Item</a></li>
+            <li v-if="!auth"><a href="/post_item">Post Item</a></li>
             <li v-if="!auth"><a href="#myModal-login" data-toggle="modal">Login</a></li>
             <li v-if="!auth"><a href="#myModal-signup" data-toggle="modal">Sign Up</a></li>
         </ul>
@@ -53,12 +53,11 @@
                 </li>
             </ul>
         </div>
-
 </header>
 <body>
 @yield('content')
 <div class="panel-body">
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-login"
+<div aria-hidden="true" aria-labelledby="login" role="dialog" tabindex="-1" id="myModal-login"
          class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -102,119 +101,28 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal-signup"
-         class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                    <h4 class="modal-title">Sign Up</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form" method="POST" action="http://localhost:8081/register"
-                          accept-charset="UTF-8">
-                        <input type="hidden" name="_token" value="lQ4J7EIOxQX5nM5t5L3kcSU69mpy7WfQtHXTR4eW">
-
-                        <div class="form-group">
-                            <label for="name" class="col-md-4 control-label">Name</label>
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name"
-                                       value="" required autofocus>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email"
-                                       value="" required>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Birthday</label>
-
-                            <div class="col-md-6">
-                                <input id="dob" type="date" class="form-control" name="dob" required>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Gender</label>
-
-                            <div class="col-md-6">
-                                <select name="gender" id="gender" class="form-control" required>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="country" class="col-md-4 control-label">Country</label>
-
-                            <div class="col-md-6">
-
-                                <select name="country" id="country" class="form-control" required>
-                                    <option value="MY">Malaysia</option>
-                                    <option value="TH">Thailand</option>
-                                    <option value="VT">Vietnam</option>
-                                    <option value="BRN">Brunei</option>
-                                    <option value="ID">Indonesia</option>
-                                </select>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Mobile</label>
-
-                            <div class="col-md-6">
-                                <input type="number" name="mobile" id="mobile" class="form-control" required>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+</div>
+<div aria-hidden="true" aria-labelledby="signup" role="dialog" tabindex="-1" id="myModal-signup"
+ class="modal fade">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+            <h4 class="modal-title">Sign Up</h4>
+        </div>
+        <div class="modal-body">
+            @include('register')
         </div>
     </div>
+</div>
+</div>
 </div>
 <footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/app.js"></script>
+<script src="/js/jquery.stepy.js" type="text/javascript"></script>
+
 @yield('scripts')
 @stack('scripts')
 </footer>

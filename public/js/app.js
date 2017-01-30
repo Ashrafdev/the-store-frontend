@@ -11880,7 +11880,20 @@ var vm = new Vue({
             })
         },
         SignUp: function SignUp() {
+            var self = this;
 
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/users',
+                data: $('#SignUpForm').serialize(),
+                success: function (data) {
+                    window.location.replace("/");
+                    alert('successful Please Login!');
+                },
+                error: function (err) {
+                    alert('Fail Please Try Again! Fill all form');
+                }
+            });
         },
         Login: function Login() {
             var self = this;
@@ -12045,6 +12058,25 @@ var vm = new Vue({
             return false;
         },
         PostItemWithSignup: function PostItemWithSignup() {
+            var self = this;
+
+            jQuery.ajax({
+                type: "POST",
+                url: self.api_url + 'api/register_with_item',
+                data: new FormData($('#UpdateItemByUser')[0]),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.debug(data);
+                    // window.location.replace("/my/items/");
+                    alert('please login to manage item!');
+                },
+                error: function (err) {
+                    console.debug(err);
+                }
+            });
+
+            return false;
         },
         RedirectToHome: function RedirectToHome() {
             return window.location.replace("/");
