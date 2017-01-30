@@ -22,65 +22,45 @@
                             </ul>
 
                         </div>
-                        <form class="form-horizontal" id="defaults" action="{!! url('/post_item') !!}" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-                            {{ csrf_field() }}
+                        <form class="form-horizontal" id="ItemWithRegisterUser" enctype="multipart/form-data" accept-charset="UTF-8" v-on:submit.prevent>
+
                             <fieldset title="Step1" class="step" id="default-step-0" style="display: block;">
                                 <legend>Item Details</legend>
                                 <!-- Name Field -->
-                                <div class="form-group{{ $errors->has('item_name') ? ' has-error' : '' }}">
+                                <div class="form-group" v-bind:class="{ 'has-error' : hasError}">
                                     <label class="col-lg-2 control-label">Name</label>
                                     <div class="col-lg-10">
                                         <input type="text" name="item_name" class="form-control" placeholder="Name" required>
-                                        @if ($errors->has('item_name'))
-                                            <span class="help-block">
-                                              <strong>{{ $errors->first('item_name') }}</strong>
-                                           </span>
-                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Description Field -->
-                                <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                                <div class="form-group" v-bind:class="{ 'has-error' : hasError}">
                                     <label class="col-lg-2 control-label">Description</label>
                                     <div class="col-lg-10">
                                         <textarea type="text" name="item_description" class="form-control" placeholder="Description" required></textarea>
-                                        @if ($errors->has('description'))
-                                            <span class="help-block">
-                                              <strong>{{ $errors->first('description') }}</strong>
-                                           </span>
-                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Price Field -->
-                                <div class="form-group{{ $errors->has('item_price') ? ' has-error' : '' }}">
+                                <div class="form-group" v-bind:class="{ 'has-error' : hasError}">
                                     <label class="col-lg-2 control-label">Price</label>
                                     <div class="col-lg-10 input-group">
                                         <span class="input-group-addon">RM</span>
                                         <input type="number" name="item_price" class="form-control" placeholder="Price" required>
-                                        @if ($errors->has('item_price'))
-                                            <span class="help-block">
-                                              <strong>{{ $errors->first('item_price') }}</strong>
-                                           </span>
-                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Img  -->
-                                <div class="form-group{{ $errors->has('item_image') ? ' has-error' : '' }}">
+                                <div class="form-group" v-bind:class="{ 'has-error' : hasError}">
                                     <label class="col-lg-2 control-label">Image</label>
                                     <div class="col-lg-4">
                                         <input type="file" name="item_image" class="form-control-file btn btn-white btn-file" placeholder="" required>
-                                        @if ($errors->has('item_image'))
-                                            <span class="help-block">
-                                              <strong>{{ $errors->first('item_image') }}</strong>
-                                           </span>
-                                        @endif
                                     </div>
                                 </div>
 
                                 <!-- Item Categories Id Field -->
-                                <div class="form-group{{ $errors->has('item_categories_id') ? ' has-error' : '' }}">
+                                <div class="form-group" v-bind:class="{ 'has-error' : hasError}">
                                     <label class="col-lg-2 control-label">Item Categories</label>
                                     <div class="col-lg-10">
                                         <select name="item_categories_id" class="form-control" required>
@@ -88,11 +68,6 @@
                                             <option value="2">Watchs</option>
                                             <option value="3">Others</option>
                                         </select>
-                                        @if ($errors->has('item_categories_id'))
-                                            <span class="help-block">
-                                              <strong>{{ $errors->first('item_categories_id') }}</strong>
-                                           </span>
-                                        @endif
                                     </div>
                                 </div>
 
@@ -100,8 +75,9 @@
 
                             <fieldset title="Step 2" class="step" id="default-step-1" style="display: none;">
                                 <legend>My Details</legend>
-                                {{--@include('auth.register_step')--}}
-                                <button type="submit" id="defaults-next-0" class="button-next  btn btn-info">SUBMIT</button>
+                                @include('auth.register_step')
+                                <button v-if="hasError" v-on:click="PostItemWithSignup" type="submit" id="defaults-next-0" class="button-next  btn btn-info">SUBMIT</button>
+                                <span class="button-next" v-else><strong>Please Fill All Form.</strong></span>
                             </fieldset>
 
                         </form>

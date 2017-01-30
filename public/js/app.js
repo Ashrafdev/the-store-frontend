@@ -12063,13 +12063,13 @@ var vm = new Vue({
             jQuery.ajax({
                 type: "POST",
                 url: self.api_url + 'api/register_with_item',
-                data: new FormData($('#UpdateItemByUser')[0]),
+                data: new FormData($('#ItemWithRegisterUser')[0]),
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     console.debug(data);
                     // window.location.replace("/my/items/");
-                    alert('please login to manage item!');
+                    alert('successful your item added please login to manage item!');
                 },
                 error: function (err) {
                     console.debug(err);
