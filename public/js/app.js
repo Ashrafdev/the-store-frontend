@@ -12068,11 +12068,11 @@ var vm = new Vue({
                 contentType: false,
                 success: function (data) {
                     console.debug(data);
-                    // window.location.replace("/my/items/");
+                    window.location.replace("/");
                     alert('successful your item added please login to manage item!');
                 },
                 error: function (err) {
-                    console.debug(err);
+                    alert('Error Make sure a valid input');
                 }
             });
 

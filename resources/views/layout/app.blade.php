@@ -122,7 +122,6 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/js/app.js"></script>
 <script src="/js/jquery.stepy.js" type="text/javascript"></script>
-
 @yield('scripts')
 @stack('scripts')
 </footer>

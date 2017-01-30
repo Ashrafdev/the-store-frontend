@@ -70,16 +70,13 @@
                                         </select>
                                     </div>
                                 </div>
-
                             </fieldset>
-
                             <fieldset title="Step 2" class="step" id="default-step-1" style="display: none;">
                                 <legend>My Details</legend>
                                 @include('auth.register_step')
-                                <button v-if="hasError" v-on:click="PostItemWithSignup" type="submit" id="defaults-next-0" class="button-next  btn btn-info">SUBMIT</button>
-                                <span class="button-next" v-else><strong>Please Fill All Form.</strong></span>
+                                <span class="button-next" v-if="hasError"><strong>Please Fill All Form.</strong></span>
+                                <button v-on:click="PostItemWithSignup" type="submit" id="defaults-next-0" class="button-next  btn btn-info">SUBMIT</button>
                             </fieldset>
-
                         </form>
                     </div>
                 </section>
@@ -91,7 +88,7 @@
     <script>
         jQuery(document).ready(function ($) {
             console.log(1);
-            $('#defaults').stepy({
+            $('#ItemWithRegisterUser').stepy({
                 backLabel: 'Previous',
                 block: true,
                 nextLabel: 'Next',
