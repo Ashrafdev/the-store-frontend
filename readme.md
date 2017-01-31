@@ -38,3 +38,20 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+## instruction
+
+configure your api url inside file /public/js/app.js bottom of file variable CONST api_url .
+
+<br>
+-> cd /path-to-the-store-html-api
+<br>
+-> composer install
+<br>
+-> npm install
+<br>
+-> php artisan migrate
+<br>
+-> php artisan serve --host=localhost --port=8082
+<br>
+-> Enjoy!
